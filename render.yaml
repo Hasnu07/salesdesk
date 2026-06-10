@@ -1,0 +1,23 @@
+# Render Blueprint — deploy SalesDesk as a single always-on web service.
+# How to use:
+#   1. Push this repo to GitHub (already done).
+#   2. Go to https://dashboard.render.com → New → Blueprint.
+#   3. Connect the Hasnu07/salesdesk repo. Render reads this file and deploys.
+#   4. You get a permanent URL like https://salesdesk.onrender.com
+#
+# The Express backend serves the built frontend, so it's one service, one URL.
+# Render injects $PORT automatically (the server already honors it).
+services:
+  - type: web
+    name: salesdesk
+    runtime: node
+    plan: free
+    buildCommand: npm run install:all && npm run build
+    startCommand: npm --prefix backend start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+# Note (free plan): the service sleeps after ~15 min idle and cold-starts on the
+# next visit, and backend/data/ is ephemeral (wiped on redeploy → app re-seeds
+# demo data). For persistent storage add a Render Disk mounted at backend/data
+# (paid) or swap the file store for a database.
