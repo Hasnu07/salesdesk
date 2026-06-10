@@ -10,7 +10,7 @@
     {
       "name": "salesdesk-prod",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["backend/server.js"],
+      "runtimeArgs": ["server/server.js"],
       "port": 3001
     }
   ]

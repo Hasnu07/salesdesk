@@ -174,7 +174,7 @@ app.delete("/api/kv/:key", async (req, res) => {
 });
 
 /* --------- serve built frontend locally (Vercel serves it as static) ------ */
-const DIST_DIR = path.join(__dirname, "..", "frontend", "dist");
+const DIST_DIR = path.join(__dirname, "..", "dist");
 if (fs.existsSync(DIST_DIR)) {
   app.use(express.static(DIST_DIR));
   app.use((req, res, next) => {

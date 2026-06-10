@@ -1,6 +1,6 @@
 node_modules/
-backend/data/
-frontend/dist/
+dist/
+server/data/
 *.log
 .DS_Store
 .claude/settings.local.json
