@@ -32,12 +32,25 @@ npm run dev
 The frontend proxies `/api/*` to the backend, so everything is same-origin in
 the browser. On first launch the app seeds demo data automatically.
 
-## Production-style run
+## Production run (single service)
 
 ```bash
-npm run build   # builds the frontend
-npm start       # serves the built frontend + runs the backend
+npm start   # builds the frontend, then serves everything from one port
 ```
+
+In production the Express backend also serves the built frontend
+(`frontend/dist`), so the whole app runs on **one origin / one port**
+(`http://localhost:3001` by default, or `$PORT`). No separate frontend server,
+no CORS, no proxy — the `window.storage` shim's relative `/api` calls are
+same-origin. This is the form to deploy to a Node host (Render, Railway, etc.):
+
+- **Build command:** `npm run install:all && npm run build`
+- **Start command:** `npm --prefix backend start`
+- The host's `$PORT` is honored automatically.
+
+> Note: GitHub itself only hosts the source. To get a live, clickable URL you
+> must deploy this combined service to a host that runs Node (GitHub Pages is
+> static-only and can't run the backend).
 
 ## Login PINs (demo seed)
 

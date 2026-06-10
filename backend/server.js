@@ -71,6 +71,21 @@ app.delete("/api/kv/:key", (req, res) => {
   }
 });
 
+// In production, serve the built frontend from this same server so the whole
+// app runs on one origin (one URL/port). The window.storage shim uses relative
+// /api paths, so it's automatically same-origin here. In dev this block is
+// inert (no dist yet) and Vite serves the frontend with an /api proxy instead.
+const DIST_DIR = path.join(__dirname, "..", "frontend", "dist");
+if (fs.existsSync(DIST_DIR)) {
+  app.use(express.static(DIST_DIR));
+  // SPA fallback: any non-API GET returns index.html.
+  app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api/")) return next();
+    res.sendFile(path.join(DIST_DIR, "index.html"));
+  });
+  console.log(`Serving built frontend from ${DIST_DIR}`);
+}
+
 app.listen(PORT, () => {
   console.log(`SalesDesk backend listening on http://localhost:${PORT}`);
   console.log(`Data directory: ${DATA_DIR}`);
